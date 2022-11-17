@@ -2,26 +2,45 @@ from dataclasses import Dataclass
 
 @dataclass
 class Ingredient
-	PH: float = 0.
-    EC: float = 0
-    dry: float = 0.
-    liquid: float = 0.
-	aeration: float = 0.
-    substrat: float = 0.
-    compost: float = 0.
-    mulch: float = 0.
-    carbon: float = 0.
-    nitrogen: float = 0.
-    phosphore: float = 0.
-    potassium: float = 0.
-    calcium: float = 0.
-    magnesium: float  = 0.
-    iron: float = 0.
-    potassium: float = 0.
-    molybdenium: float = 0.
-    copper: float = 0.
-    chlore: float = 0.
-    bore: float = 0.
-    silicium: float = 0
-    sulfure: float = 0
-    recomended_dosage: Dosage | None = None
+	"""Ingredient with values in SI units or proportions
+    
+    None stands for uknwown
+    0. stands for absence
+    
+    The proportions of chemical elements stands for elements' forms that can be absorbed after and eventual transformation from soil's life.
+    """
+	density: float | None = None    #: Density in SI units. Kg/m^3 or g/L.
+	PH: float | None = None			#: PH value in the 1.-14. scale.
+    EC: float | None = None			#: Siemens per metre (S/m)
+    dry: float | None = None		#: Proportion in mass of dry matter
+    liquid: float | None = None		#: Proportion in mass of liquid matter
+	aeration: float | None = 0.		#: Proportion in volume of aeration medium (Perlite, Pumice, volcanic rocks...)
+    substrat: float | None = 0.		#: Proporition in volume of substrat (Peat Mosse, Coco coir...)
+    compost: float | None = 0.		#: Proportion in volume of compost
+    mulch: float | None = 0.		#: Proporiton in volume of Mulch
+    carbon: float | None = 0.		#: Proporition in mass of Carbon (C)
+    nitrogen: float | None = 0.		#: Proportion in mass of Nitrogen (N)
+    phosphore: float | None = None  #: Proportion in mass of Phosphore (P)
+    potassium: float | None = None  #: Proportion in mass of Potassium (K)
+    calcium: float | None = None    #: Proportion in mass of Calcium (Ca)
+    magnesium: float | None = None  #: Proportion in mass of Magnesium (Mg)
+    iron: float | None = None       #: Proportion in mass of Iron (Fe)
+    molybdenium: float | None = None  #: Proportion in mass of Molybdenium (Mo)
+    copper: float | None = None     #: Proportion in mass of copper (Cu)
+    chlore: float | None = None     #: Proportion in mass of chlore (Cl)
+    bore: float | None = None       #: Proportion in mass of bore (B)
+    silicium: float | None = None   #: Proportion in mass of silicium (Si)
+    sulfure: float | None = None    #: Proportion in mass of sulfure (S)
+    recomended_dosage: Dosage | None = None  	#: Recommended dosage from the ingredient's manufacturer
+    by: Company | List[Company] = None 			#: Name of the manufacturing company
+    description: str | None = None				#: Description of the ingredient in English
+    
+ 	@property
+    def kg_per_liter(self) -> float:
+        """Density in Kg/L"""
+        return self.density / 1000
+    
+    @kg_per_liter.setter
+    def kg_per_liter(self, value: float):
+        self.density = value * 1000
+        
